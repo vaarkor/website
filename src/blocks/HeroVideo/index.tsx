@@ -3,22 +3,49 @@ import Link from 'next/link'
 
 type HeroVideoBlock = Extract<NonNullable<Page['blocks']>[number], { blockType: 'hero-video' }>
 
+function getYouTubeEmbedId(url: string): string {
+  const videoIdMatch =
+    url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\s]+)/) ||
+    url.match(/^([a-zA-Z0-9_-]{11})$/)
+
+  return videoIdMatch ? videoIdMatch[1] : url
+}
+
 export function HeroVideo({ block }: { block: HeroVideoBlock }) {
-  const videoUrl = typeof block.video === 'object' ? block.video.url : null
+  const isYouTube = block.videoSource === 'youtube'
+  const videoUrl = !isYouTube && typeof block.video === 'object' ? block.video.url : null
+  const youtubeId = isYouTube && block.youtubeUrl ? getYouTubeEmbedId(block.youtubeUrl) : null
 
   return (
     <section className="relative h-screen w-full overflow-hidden">
       {/* Background Video */}
-      {videoUrl && (
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 h-full w-full object-cover"
-        >
-          <source src={videoUrl} type="video/mp4" />
-        </video>
+      {isYouTube && youtubeId ? (
+        <div className="absolute inset-0 h-full w-full">
+          <iframe
+            src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=1&loop=1&playlist=${youtubeId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1`}
+            title="Background video"
+            allow="autoplay; encrypted-media"
+            className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+            style={{
+              width: '100vw',
+              height: '56.25vw', // 16:9 ratio
+              minHeight: '100vh',
+              minWidth: '177.78vh', // 16:9 ratio
+            }}
+          />
+        </div>
+      ) : (
+        videoUrl && (
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 h-full w-full object-cover"
+          >
+            <source src={videoUrl} type="video/mp4" />
+          </video>
+        )
       )}
 
       {/* Overlay */}

@@ -1,4 +1,5 @@
 import React from 'react'
+import { ThemeToggle } from '@/components/ThemeToggle'
 import './styles.css'
 
 export const metadata = {
@@ -13,6 +14,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
     <html lang="en" className="light">
       <body className="bg-spring-50 text-gray-900 dark:bg-forest-950 dark:text-gray-100">
         <main>{children}</main>
+        <ThemeToggle />
       </body>
     </html>
   )

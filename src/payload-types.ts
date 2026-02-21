@@ -173,7 +173,12 @@ export interface Page {
   slug: string;
   blocks: (
     | {
-        video: string | Media;
+        videoSource: 'youtube' | 'upload';
+        /**
+         * YouTube video URL or ID
+         */
+        youtubeUrl?: string | null;
+        video?: (string | null) | Media;
         primaryButton: {
           label: string;
           /**
@@ -407,6 +412,8 @@ export interface PagesSelect<T extends boolean = true> {
         'hero-video'?:
           | T
           | {
+              videoSource?: T;
+              youtubeUrl?: T;
               video?: T;
               primaryButton?:
                 | T

@@ -38,12 +38,44 @@ export const Pages: CollectionConfig = {
           },
           fields: [
             {
+              name: 'videoSource',
+              type: 'select',
+              required: true,
+              defaultValue: 'youtube',
+              options: [
+                { label: 'YouTube URL', value: 'youtube' },
+                { label: 'Upload Video File', value: 'upload' },
+              ],
+            },
+            {
+              name: 'youtubeUrl',
+              type: 'text',
+              admin: {
+                description: 'YouTube video URL or ID',
+                condition: (data, siblingData) => siblingData.videoSource === 'youtube',
+              },
+              validate: (value, { siblingData }) => {
+                if (siblingData.videoSource === 'youtube' && !value) {
+                  return 'YouTube URL is required'
+                }
+                return true
+              },
+            },
+            {
               name: 'video',
               type: 'upload',
               relationTo: 'media',
-              required: true,
               filterOptions: {
                 mimeType: { contains: 'video' },
+              },
+              admin: {
+                condition: (data, siblingData) => siblingData.videoSource === 'upload',
+              },
+              validate: (value, { siblingData }) => {
+                if (siblingData.videoSource === 'upload' && !value) {
+                  return 'Video file is required'
+                }
+                return true
               },
             },
             {
