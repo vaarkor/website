@@ -1,0 +1,51 @@
+import type { Page } from '@/payload-types'
+import Link from 'next/link'
+
+type HeroVideoBlock = Extract<NonNullable<Page['blocks']>[number], { blockType: 'hero-video' }>
+
+export function HeroVideo({ block }: { block: HeroVideoBlock }) {
+  const videoUrl = typeof block.video === 'object' ? block.video.url : null
+
+  return (
+    <section className="relative h-screen w-full overflow-hidden">
+      {/* Background Video */}
+      {videoUrl && (
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 h-full w-full object-cover"
+        >
+          <source src={videoUrl} type="video/mp4" />
+        </video>
+      )}
+
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/30" />
+
+      {/* Content */}
+      <div className="relative z-10 flex h-full flex-col items-center justify-center gap-8 px-4">
+        <h1 className="text-center text-5xl font-bold text-white drop-shadow-lg md:text-7xl">
+          VÅR - Vokalensemble Aarhus
+        </h1>
+
+        <div className="flex flex-col gap-4 sm:flex-row">
+          <Link
+            href={block.primaryButton.link}
+            className="rounded-lg bg-forest-green-600 px-8 py-4 text-lg font-semibold text-white shadow-xl transition-all hover:bg-forest-green-700 hover:scale-105"
+          >
+            {block.primaryButton.label}
+          </Link>
+
+          <Link
+            href={block.secondaryButton.link}
+            className="rounded-lg bg-white px-8 py-4 text-lg font-semibold text-forest-green-800 shadow-xl transition-all hover:bg-spring-100 hover:scale-105"
+          >
+            {block.secondaryButton.label}
+          </Link>
+        </div>
+      </div>
+    </section>
+  )
+}
