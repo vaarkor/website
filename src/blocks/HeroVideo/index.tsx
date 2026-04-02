@@ -13,7 +13,8 @@ function getYouTubeEmbedId(url: string): string {
 
 export function HeroVideo({ block }: { block: HeroVideoBlock }) {
   const isYouTube = block.videoSource === 'youtube'
-  const videoUrl = !isYouTube && typeof block.video === 'object' ? block.video.url : null
+  const videoUrl =
+    !isYouTube && typeof block.video === 'object' && block.video ? block.video.url : null
   const youtubeId = isYouTube && block.youtubeUrl ? getYouTubeEmbedId(block.youtubeUrl) : null
 
   return (

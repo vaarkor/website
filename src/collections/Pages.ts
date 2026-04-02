@@ -54,7 +54,10 @@ export const Pages: CollectionConfig = {
                 description: 'YouTube video URL or ID',
                 condition: (data, siblingData) => siblingData.videoSource === 'youtube',
               },
-              validate: (value, { siblingData }) => {
+              validate: (
+                value: string | null | undefined,
+                { siblingData }: { siblingData: Record<string, unknown> },
+              ) => {
                 if (siblingData.videoSource === 'youtube' && !value) {
                   return 'YouTube URL is required'
                 }
@@ -71,7 +74,10 @@ export const Pages: CollectionConfig = {
               admin: {
                 condition: (data, siblingData) => siblingData.videoSource === 'upload',
               },
-              validate: (value, { siblingData }) => {
+              validate: (
+                value: unknown,
+                { siblingData }: { siblingData: Record<string, unknown> },
+              ) => {
                 if (siblingData.videoSource === 'upload' && !value) {
                   return 'Video file is required'
                 }
