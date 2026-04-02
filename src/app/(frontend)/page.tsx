@@ -25,7 +25,7 @@ export default async function HomePage() {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-forest-green-950">Welcome to VÅR</h1>
+          <h1 className="text-4xl font-bold text-forest-green-800">Welcome to VÅR</h1>
           <p className="mt-4 text-lg text-bark-brown">
             Please create a page with slug &ldquo;home&rdquo; in the Payload admin panel.
           </p>

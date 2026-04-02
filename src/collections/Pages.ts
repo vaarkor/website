@@ -159,21 +159,6 @@ export const Pages: CollectionConfig = {
                 },
               ],
             },
-            {
-              name: 'contactEmail',
-              type: 'email',
-              admin: {
-                description: 'Optional: Email address for the call-to-action button',
-              },
-            },
-            {
-              name: 'contactButtonText',
-              type: 'text',
-              defaultValue: 'Contact us for audition',
-              admin: {
-                description: 'Text for the email button (only shown if email is provided)',
-              },
-            },
           ],
         },
         {
@@ -238,6 +223,39 @@ export const Pages: CollectionConfig = {
                 { label: 'Left', value: 'left' },
                 { label: 'Right', value: 'right' },
               ],
+            },
+          ],
+        },
+        {
+          slug: 'contact-form',
+          labels: {
+            singular: 'Contact Form Block',
+            plural: 'Contact Form Blocks',
+          },
+          fields: [
+            {
+              name: 'heading',
+              type: 'text',
+              defaultValue: 'Kontakt os',
+              admin: {
+                description: 'Optional heading above the form',
+              },
+            },
+            {
+              name: 'description',
+              type: 'textarea',
+              admin: {
+                description: 'Optional description text below the heading',
+              },
+            },
+            {
+              name: 'emailSubject',
+              type: 'text',
+              required: true,
+              defaultValue: 'Ny henvendelse fra kontaktformularen',
+              admin: {
+                description: 'The email subject line (e.g., "Ny anmodning om at tilslutte koret")',
+              },
             },
           ],
         },

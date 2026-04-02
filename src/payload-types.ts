@@ -70,6 +70,7 @@ export interface Config {
     users: User;
     media: Media;
     pages: Page;
+    'form-submissions': FormSubmission;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -80,6 +81,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
+    'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -218,14 +220,6 @@ export interface Page {
           imagePosition: 'left' | 'right';
           id?: string | null;
         }[];
-        /**
-         * Optional: Email address for the call-to-action button
-         */
-        contactEmail?: string | null;
-        /**
-         * Text for the email button (only shown if email is provided)
-         */
-        contactButtonText?: string | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'zig-zag';
@@ -277,7 +271,36 @@ export interface Page {
         blockName?: string | null;
         blockType: 'video-text';
       }
+    | {
+        /**
+         * Optional heading above the form
+         */
+        heading?: string | null;
+        /**
+         * Optional description text below the heading
+         */
+        description?: string | null;
+        /**
+         * The email subject line (e.g., "Ny anmodning om at tilslutte koret")
+         */
+        emailSubject: string;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'contact-form';
+      }
   )[];
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form-submissions".
+ */
+export interface FormSubmission {
+  id: string;
+  senderEmail: string;
+  subject: string;
+  message: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -316,6 +339,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'pages';
         value: string | Page;
+      } | null)
+    | ({
+        relationTo: 'form-submissions';
+        value: string | FormSubmission;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -441,8 +468,6 @@ export interface PagesSelect<T extends boolean = true> {
                     imagePosition?: T;
                     id?: T;
                   };
-              contactEmail?: T;
-              contactButtonText?: T;
               id?: T;
               blockName?: T;
             };
@@ -464,7 +489,27 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+        'contact-form'?:
+          | T
+          | {
+              heading?: T;
+              description?: T;
+              emailSubject?: T;
+              id?: T;
+              blockName?: T;
+            };
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form-submissions_select".
+ */
+export interface FormSubmissionsSelect<T extends boolean = true> {
+  senderEmail?: T;
+  subject?: T;
+  message?: T;
   updatedAt?: T;
   createdAt?: T;
 }

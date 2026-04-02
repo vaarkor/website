@@ -41,18 +41,6 @@ export function ZigZag({ block }: { block: ZigZagBlock }) {
             </div>
           )
         })}
-
-        {/* Contact Button */}
-        {block.contactEmail && (
-          <div className="text-center pt-8">
-            <a
-              href={`mailto:${block.contactEmail}`}
-              className="inline-block rounded-lg bg-forest-green-600 px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all hover:bg-forest-green-700 hover:scale-105"
-            >
-              {block.contactButtonText || 'Contact us for audition'}
-            </a>
-          </div>
-        )}
       </div>
     </section>
   )

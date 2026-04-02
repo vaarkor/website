@@ -3,6 +3,7 @@ import { HeroVideo } from '@/blocks/HeroVideo'
 import { ZigZag } from '@/blocks/ZigZag'
 import { Parallax } from '@/blocks/Parallax'
 import { VideoText } from '@/blocks/VideoText'
+import { ContactFormBlock } from '@/blocks/ContactForm'
 
 export function RenderBlocks({ blocks }: { blocks: PageType['blocks'] }) {
   if (!blocks || blocks.length === 0) {
@@ -24,6 +25,9 @@ export function RenderBlocks({ blocks }: { blocks: PageType['blocks'] }) {
 
           case 'video-text':
             return <VideoText key={index} block={block} />
+
+          case 'contact-form':
+            return <ContactFormBlock key={index} block={block} />
 
           default:
             return null
