@@ -1,33 +1,7 @@
 @import 'tailwindcss';
 
 @theme {
-  /* Spring colors (light mode) */
-  --color-spring-50: #f0fdf4;
-  --color-spring-100: #dcfce7;
-  --color-spring-200: #bbf7d0;
-  --color-spring-300: #86efac;
-  --color-spring-400: #4ade80;
-  --color-spring-500: #22c55e;
-  --color-spring-600: #16a34a;
-  --color-spring-700: #15803d;
-  --color-spring-800: #166534;
-  --color-spring-900: #14532d;
-  --color-spring-950: #052e16;
-
-  /* Forest colors (dark mode) */
-  --color-forest-50: #f6f6f5;
-  --color-forest-100: #e7e7e5;
-  --color-forest-200: #d1d0cc;
-  --color-forest-300: #b0afa8;
-  --color-forest-400: #8c8a81;
-  --color-forest-500: #6f6d64;
-  --color-forest-600: #5c5a52;
-  --color-forest-700: #4d4b44;
-  --color-forest-800: #42403a;
-  --color-forest-900: #3a3833;
-  --color-forest-950: #1f1e1b;
-
-  /* Forest Green (brand) */
+  /* Forest Green — primary palette (§2.1) */
   --color-forest-green-50: #f3f8f6;
   --color-forest-green-100: #e1ede7;
   --color-forest-green-200: #c3dbd0;
@@ -40,18 +14,17 @@
   --color-forest-green-900: #243a33;
   --color-forest-green-950: #12211c;
 
-  /* Warm Brown (dark mode accent) */
-  --color-warm-brown-50: #faf8f5;
-  --color-warm-brown-100: #f2ede4;
-  --color-warm-brown-200: #e5dac8;
-  --color-warm-brown-300: #d3c1a3;
-  --color-warm-brown-400: #bfa47a;
-  --color-warm-brown-500: #b18c5d;
-  --color-warm-brown-600: #a37951;
-  --color-warm-brown-700: #886344;
-  --color-warm-brown-800: #6f523b;
-  --color-warm-brown-900: #5a4431;
-  --color-warm-brown-950: #302318;
+  /* Neutrals — Earth & Light (§2.2) */
+  --color-off-white: #f7f7f5;
+  --color-warm-gray: #e8e5e0;
+  --color-bark-brown: #5c4a3a;
+  --color-dark-brown: #3b2f25;
+  --color-charcoal: #1a1a1a;
+
+  /* Accent — Spring Highlights (§2.3) */
+  --color-leaf-green: #a8d5ba;
+  --color-blossom-cream: #fdf8f0;
+  --color-moss-gold: #b5a642;
 }
 
 * {
@@ -70,8 +43,15 @@ body,
 
 body {
   margin: 0;
+  font-size: 18px;
+  line-height: 28px;
 
   @media (max-width: 1024px) {
+    font-size: 16px;
+    line-height: 26px;
+  }
+
+  @media (max-width: 768px) {
     font-size: 15px;
     line-height: 24px;
   }
@@ -106,25 +86,57 @@ h1 {
   }
 }
 
+h2 {
+  font-size: 40px;
+  line-height: 48px;
+  font-weight: 600;
+
+  @media (max-width: 1024px) {
+    font-size: 32px;
+    line-height: 38px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 28px;
+    line-height: 32px;
+  }
+}
+
+h3 {
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 600;
+
+  @media (max-width: 1024px) {
+    font-size: 24px;
+    line-height: 30px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 22px;
+    line-height: 28px;
+  }
+}
+
 p {
   margin: 24px 0;
 
   @media (max-width: 1024px) {
-    margin: calc(var(--base) * 0.75) 0;
+    margin: 18px 0;
   }
 }
 
 a {
   color: currentColor;
 
-  &:focus {
-    opacity: 0.8;
-    outline: none;
+  &:focus-visible {
+    outline: 2px solid var(--color-forest-green-400);
+    outline-offset: 2px;
+    border-radius: 4px;
   }
 
   &:active {
     opacity: 0.7;
-    outline: none;
   }
 }
 
@@ -132,76 +144,14 @@ svg {
   vertical-align: middle;
 }
 
-.home {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  height: 100vh;
-  padding: 45px;
-  max-width: 1024px;
-  margin: 0 auto;
-  overflow: hidden;
-
-  @media (max-width: 400px) {
-    padding: 24px;
-  }
-
-  .content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex-grow: 1;
-
-    h1 {
-      text-align: center;
-    }
-  }
-
-  .links {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-
-    a {
-      text-decoration: none;
-      padding: 0.25rem 0.5rem;
-      border-radius: 4px;
-    }
-
-    .admin {
-      color: rgb(0, 0, 0);
-      background: rgb(1000, 1000, 1000);
-      border: 1px solid rgb(0, 0, 0);
-    }
-
-    .docs {
-      color: rgb(1000, 1000, 1000);
-      background: rgb(0, 0, 0);
-      border: 1px solid rgb(1000, 1000, 1000);
-    }
-  }
-
-  .footer {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    @media (max-width: 1024px) {
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    p {
-      margin: 0;
-    }
-
-    .codeLink {
-      text-decoration: none;
-      padding: 0 0.5rem;
-      background: rgb(60, 60, 60);
-      border-radius: 4px;
-    }
+/* Respect reduced motion (§8, §11) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

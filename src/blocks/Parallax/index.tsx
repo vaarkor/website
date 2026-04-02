@@ -33,7 +33,7 @@ export function Parallax({ block }: { block: ParallaxBlock }) {
 
       {/* Content */}
       <div className="relative z-10 mx-auto w-full max-w-4xl px-4 py-16">
-        <div className="rounded-lg bg-white/90 dark:bg-forest-900/90 p-8 md:p-12 shadow-2xl backdrop-blur-sm">
+        <div className="rounded-lg bg-white/90 dark:bg-forest-green-900/90 p-8 md:p-12 shadow-2xl backdrop-blur-sm">
           <div className="prose prose-lg dark:prose-invert max-w-none">
             {serializeLexical(block.content)}
           </div>

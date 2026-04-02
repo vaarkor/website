@@ -32,30 +32,17 @@ function serializeNode(node: LexicalNode, key: number): React.ReactNode {
 
   // Text node
   if (node.type === 'text') {
-    let text = <span key={key}>{node.text}</span>
+    let content: React.ReactNode = node.text
 
-    if (node.format & 1) {
-      // Bold
-      text = <strong key={key}>{node.text}</strong>
-    }
-    if (node.format & 2) {
-      // Italic
-      text = <em key={key}>{node.text}</em>
-    }
-    if (node.format & 8) {
-      // Underline
-      text = <u key={key}>{node.text}</u>
-    }
-    if (node.format & 16) {
-      // Strikethrough
-      text = <s key={key}>{node.text}</s>
-    }
-    if (node.format & 32) {
-      // Code
-      text = <code key={key}>{node.text}</code>
-    }
+    const fmt = node.format ?? 0
 
-    return text
+    if (fmt & 1) content = <strong>{content}</strong>
+    if (fmt & 2) content = <em>{content}</em>
+    if (fmt & 8) content = <u>{content}</u>
+    if (fmt & 16) content = <s>{content}</s>
+    if (fmt & 32) content = <code>{content}</code>
+
+    return <Fragment key={key}>{content}</Fragment>
   }
 
   // Element nodes
@@ -65,9 +52,10 @@ function serializeNode(node: LexicalNode, key: number): React.ReactNode {
     case 'paragraph':
       return <p key={key}>{children}</p>
 
-    case 'heading':
-      const HeadingTag = `h${node.tag}` as keyof JSX.IntrinsicElements
+    case 'heading': {
+      const HeadingTag = (node.tag ?? 'h2') as 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
       return <HeadingTag key={key}>{children}</HeadingTag>
+    }
 
     case 'list':
       const ListTag = node.listType === 'bullet' ? 'ul' : 'ol'

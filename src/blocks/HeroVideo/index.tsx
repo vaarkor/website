@@ -54,20 +54,20 @@ export function HeroVideo({ block }: { block: HeroVideoBlock }) {
       {/* Content */}
       <div className="relative z-10 flex h-full flex-col items-center justify-center gap-8 px-4">
         <h1 className="text-center text-5xl font-bold text-white drop-shadow-lg md:text-7xl">
-          VÅR - Vokalensemble Aarhus
+          VÅR — Vokalensemble Aarhus
         </h1>
 
         <div className="flex flex-col gap-4 sm:flex-row">
           <Link
             href={block.primaryButton.link}
-            className="rounded-lg bg-forest-green-600 px-8 py-4 text-lg font-semibold text-white shadow-xl transition-all hover:bg-forest-green-700 hover:scale-105"
+            className="rounded-lg bg-forest-green-700 px-8 py-4 text-lg font-semibold text-white shadow-xl transition-all hover:bg-forest-green-800 hover:scale-105 focus-visible:ring-2 focus-visible:ring-forest-green-400 focus-visible:ring-offset-2"
           >
             {block.primaryButton.label}
           </Link>
 
           <Link
             href={block.secondaryButton.link}
-            className="rounded-lg bg-white px-8 py-4 text-lg font-semibold text-forest-green-800 shadow-xl transition-all hover:bg-spring-100 hover:scale-105"
+            className="rounded-lg bg-white px-8 py-4 text-lg font-semibold text-forest-green-900 shadow-xl transition-all hover:bg-gray-100 hover:scale-105 focus-visible:ring-2 focus-visible:ring-forest-green-400 focus-visible:ring-offset-2"
           >
             {block.secondaryButton.label}
           </Link>
