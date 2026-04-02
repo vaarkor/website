@@ -52,7 +52,7 @@ Create a `.env` file in the root directory:
 
 ```env
 # MongoDB Connection
-DATABASE_URL=mongodb://localhost:27017/vaar-website
+DATABASE_MONGODB_URI=mongodb://localhost:27017/vaar-website
 # For MongoDB Atlas, use: mongodb+srv://username:password@cluster.mongodb.net/vaar-website
 
 # Payload Secret (generate a strong random string)
@@ -126,7 +126,7 @@ In the admin panel:
    - Go to your Vercel project settings
    - Add environment variables:
      ```
-     DATABASE_URL=mongodb+srv://...
+     DATABASE_MONGODB_URI=mongodb+srv://...
      PAYLOAD_SECRET=your-production-secret
      NEXT_PUBLIC_SERVER_URL=https://your-domain.vercel.app
      ```
