@@ -265,6 +265,45 @@ export const Pages: CollectionConfig = {
             },
           ],
         },
+        {
+          slug: 'video-carousel',
+          labels: {
+            singular: 'Video Carousel Block',
+            plural: 'Video Carousel Blocks',
+          },
+          fields: [
+            {
+              name: 'heading',
+              type: 'text',
+              admin: {
+                description: 'Optional heading above the carousel',
+              },
+            },
+            {
+              name: 'videos',
+              type: 'array',
+              required: true,
+              minRows: 1,
+              fields: [
+                {
+                  name: 'youtubeUrl',
+                  type: 'text',
+                  required: true,
+                  admin: {
+                    description: 'YouTube video URL or embed ID',
+                  },
+                },
+                {
+                  name: 'title',
+                  type: 'text',
+                  admin: {
+                    description: 'Optional title shown below the video',
+                  },
+                },
+              ],
+            },
+          ],
+        },
       ],
     },
   ],

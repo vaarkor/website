@@ -288,6 +288,26 @@ export interface Page {
         blockName?: string | null;
         blockType: 'contact-form';
       }
+    | {
+        /**
+         * Optional heading above the carousel
+         */
+        heading?: string | null;
+        videos: {
+          /**
+           * YouTube video URL or embed ID
+           */
+          youtubeUrl: string;
+          /**
+           * Optional title shown below the video
+           */
+          title?: string | null;
+          id?: string | null;
+        }[];
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'video-carousel';
+      }
   )[];
   updatedAt: string;
   createdAt: string;
@@ -495,6 +515,20 @@ export interface PagesSelect<T extends boolean = true> {
               heading?: T;
               description?: T;
               emailSubject?: T;
+              id?: T;
+              blockName?: T;
+            };
+        'video-carousel'?:
+          | T
+          | {
+              heading?: T;
+              videos?:
+                | T
+                | {
+                    youtubeUrl?: T;
+                    title?: T;
+                    id?: T;
+                  };
               id?: T;
               blockName?: T;
             };
