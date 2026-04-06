@@ -4,6 +4,7 @@ import { ZigZag } from '@/blocks/ZigZag'
 import { Parallax } from '@/blocks/Parallax'
 import { VideoText } from '@/blocks/VideoText'
 import { ContactFormBlock } from '@/blocks/ContactForm'
+import { VideoCarousel } from '@/blocks/VideoCarousel'
 
 export function RenderBlocks({ blocks }: { blocks: PageType['blocks'] }) {
   if (!blocks || blocks.length === 0) {
@@ -28,6 +29,9 @@ export function RenderBlocks({ blocks }: { blocks: PageType['blocks'] }) {
 
           case 'contact-form':
             return <ContactFormBlock key={index} block={block} />
+
+          case 'video-carousel':
+            return <VideoCarousel key={index} block={block} />
 
           default:
             return null
