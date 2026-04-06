@@ -4,21 +4,7 @@ import config from '@/payload.config'
 import { RenderBlocks } from '@/components/RenderBlocks'
 import { notFound } from 'next/navigation'
 
-export async function generateStaticParams() {
-  const payloadConfig = await config
-  const payload = await getPayload({ config: payloadConfig })
-
-  const pages = await payload.find({
-    collection: 'pages',
-    limit: 100,
-  })
-
-  return pages.docs
-    .filter((page) => page.slug !== 'home')
-    .map((page) => ({
-      slug: page.slug,
-    }))
-}
+export const dynamic = 'force-dynamic'
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
