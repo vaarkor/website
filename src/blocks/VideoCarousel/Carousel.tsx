@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useState } from 'react'
 
 interface Video {
@@ -76,10 +77,12 @@ export function Carousel({ videos }: { videos: Video[] }) {
                       className="absolute inset-0 h-full w-full"
                     />
                   ) : (
-                    <img
+                    <Image
                       src={getYouTubeThumbnail(v.youtubeUrl)}
                       alt={v.title || `Video ${i + 1}`}
-                      className="absolute inset-0 h-full w-full object-cover"
+                      fill
+                      sizes="(max-width: 768px) 50vw, 35vw"
+                      className="object-cover"
                     />
                   )}
                 </div>

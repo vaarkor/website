@@ -4,6 +4,14 @@ import { withPayload } from '@payloadcms/next/withPayload'
 const nextConfig = {
   // Your Next.js config here
   devIndicators: false,
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'img.youtube.com',
+      },
+    ],
+  },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
       '.cjs': ['.cts', '.cjs'],
