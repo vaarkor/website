@@ -7,83 +7,109 @@ interface Video {
   title?: string | null
 }
 
-function getYouTubeEmbedUrl(url: string): string {
-  const videoIdMatch =
+function getVideoId(url: string): string {
+  const match =
     url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\s]+)/) ||
     url.match(/^([a-zA-Z0-9_-]{11})$/)
+  return match ? match[1] : url
+}
 
-  const videoId = videoIdMatch ? videoIdMatch[1] : url
-  return `https://www.youtube.com/embed/${videoId}`
+function getYouTubeEmbedUrl(url: string): string {
+  return `https://www.youtube.com/embed/${getVideoId(url)}`
+}
+
+function getYouTubeThumbnail(url: string): string {
+  return `https://img.youtube.com/vi/${getVideoId(url)}/hqdefault.jpg`
 }
 
 export function Carousel({ videos }: { videos: Video[] }) {
   const [current, setCurrent] = useState(0)
 
-  const prev = () => setCurrent((i) => (i === 0 ? videos.length - 1 : i - 1))
-  const next = () => setCurrent((i) => (i === videos.length - 1 ? 0 : i + 1))
-
   const video = videos[current]
 
+  // Build visible slides: up to 2 on each side of current
+  const getOffset = (index: number) => index - current
+
   return (
-    <div className="relative">
-      {/* Video */}
-      <div className="relative aspect-video w-full overflow-hidden rounded-lg shadow-lg">
-        <iframe
-          key={current}
-          src={getYouTubeEmbedUrl(video.youtubeUrl)}
-          title={video.title || `Video ${current + 1}`}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          className="absolute inset-0 h-full w-full"
-        />
+    <div className="flex flex-col items-center gap-6">
+      {/* Coverflow track */}
+      <div className="relative w-full overflow-hidden" style={{ perspective: '1200px' }}>
+        {/* Reserve height based on the center card */}
+        <div className="relative mx-auto w-full" style={{ paddingBottom: '45%' }}>
+          {videos.map((v, i) => {
+            const offset = getOffset(i)
+            const absOffset = Math.abs(offset)
+
+            // Only render slides within 2 positions of current
+            if (absOffset > 2) return null
+
+            const isActive = offset === 0
+
+            // Transform values based on position
+            const translateX = offset * 38 // % shift left/right
+            const translateZ = isActive ? 0 : -150 - absOffset * 50 // push back
+            const scale = isActive ? 1 : 0.75 - absOffset * 0.05
+            const opacity = isActive ? 1 : 0.6 - absOffset * 0.15
+            const zIndex = 10 - absOffset
+
+            return (
+              <button
+                key={i}
+                onClick={() => setCurrent(i)}
+                disabled={isActive}
+                aria-label={v.title || `Video ${i + 1}`}
+                className="absolute inset-0 m-auto w-[65%] transition-all duration-500 ease-out focus-visible:ring-2 focus-visible:ring-forest-green-400 focus-visible:ring-offset-2"
+                style={{
+                  transform: `translateX(${translateX}%) translateZ(${translateZ}px) scale(${scale})`,
+                  opacity,
+                  zIndex,
+                  cursor: isActive ? 'default' : 'pointer',
+                }}
+              >
+                <div className="relative aspect-video w-full overflow-hidden rounded-lg shadow-lg">
+                  {isActive ? (
+                    <iframe
+                      src={getYouTubeEmbedUrl(v.youtubeUrl)}
+                      title={v.title || `Video ${i + 1}`}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="absolute inset-0 h-full w-full"
+                    />
+                  ) : (
+                    <img
+                      src={getYouTubeThumbnail(v.youtubeUrl)}
+                      alt={v.title || `Video ${i + 1}`}
+                      className="absolute inset-0 h-full w-full object-cover"
+                    />
+                  )}
+                </div>
+              </button>
+            )
+          })}
+        </div>
       </div>
 
       {/* Title */}
       {video.title && (
-        <p className="mt-4 text-center text-lg font-semibold text-forest-green-800">
-          {video.title}
-        </p>
+        <p className="text-center text-lg font-semibold text-forest-green-800">{video.title}</p>
       )}
 
-      {/* Controls */}
+      {/* Dot indicators */}
       {videos.length > 1 && (
-        <>
-          {/* Prev / Next buttons */}
-          <button
-            onClick={prev}
-            aria-label="Forrige video"
-            className="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1/2 rounded-full bg-forest-green-950/80 p-3 text-white shadow-lg transition-all hover:bg-forest-green-900 hover:scale-110 focus-visible:ring-2 focus-visible:ring-forest-green-400 focus-visible:ring-offset-2 md:-translate-x-full"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="15 18 9 12 15 6" />
-            </svg>
-          </button>
-          <button
-            onClick={next}
-            aria-label="Næste video"
-            className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/2 rounded-full bg-forest-green-950/80 p-3 text-white shadow-lg transition-all hover:bg-forest-green-900 hover:scale-110 focus-visible:ring-2 focus-visible:ring-forest-green-400 focus-visible:ring-offset-2 md:translate-x-full"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="9 6 15 12 9 18" />
-            </svg>
-          </button>
-
-          {/* Dots */}
-          <div className="mt-4 flex justify-center gap-2">
-            {videos.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setCurrent(i)}
-                aria-label={`Gå til video ${i + 1}`}
-                className={`h-3 w-3 rounded-full transition-all ${
-                  i === current
-                    ? 'bg-forest-green-600 scale-125'
-                    : 'bg-warm-gray hover:bg-forest-green-300'
-                }`}
-              />
-            ))}
-          </div>
-        </>
+        <div className="flex justify-center gap-2">
+          {videos.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrent(i)}
+              aria-label={`Gå til video ${i + 1}`}
+              className={`h-2.5 w-2.5 rounded-full transition-all ${
+                i === current
+                  ? 'bg-forest-green-600 scale-125'
+                  : 'bg-warm-gray hover:bg-forest-green-300'
+              }`}
+            />
+          ))}
+        </div>
       )}
     </div>
   )
