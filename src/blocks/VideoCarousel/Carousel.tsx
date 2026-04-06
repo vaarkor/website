@@ -26,8 +26,6 @@ function getYouTubeThumbnail(url: string): string {
 export function Carousel({ videos }: { videos: Video[] }) {
   const [current, setCurrent] = useState(0)
 
-  const video = videos[current]
-
   // Build visible slides: up to 2 on each side of current
   const getOffset = (index: number) => index - current
 
@@ -93,29 +91,6 @@ export function Carousel({ videos }: { videos: Video[] }) {
           })}
         </div>
       </div>
-
-      {/* Title */}
-      {video.title && (
-        <p className="text-center text-lg font-semibold text-forest-green-800">{video.title}</p>
-      )}
-
-      {/* Dot indicators */}
-      {videos.length > 1 && (
-        <div className="flex justify-center gap-2">
-          {videos.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrent(i)}
-              aria-label={`Gå til video ${i + 1}`}
-              className={`h-2.5 w-2.5 rounded-full transition-all ${
-                i === current
-                  ? 'bg-forest-green-600 scale-125'
-                  : 'bg-warm-gray hover:bg-forest-green-300'
-              }`}
-            />
-          ))}
-        </div>
-      )}
     </div>
   )
 }
