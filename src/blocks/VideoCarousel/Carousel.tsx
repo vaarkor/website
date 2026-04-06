@@ -68,23 +68,25 @@ export function Carousel({ videos }: { videos: Video[] }) {
                 }}
               >
                 <div className="relative aspect-video w-full overflow-hidden rounded-lg shadow-lg">
-                  {isActive ? (
-                    <iframe
-                      src={getYouTubeEmbedUrl(v.youtubeUrl)}
-                      title={v.title || `Video ${i + 1}`}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      className="absolute inset-0 h-full w-full"
-                    />
-                  ) : (
-                    <Image
-                      src={getYouTubeThumbnail(v.youtubeUrl)}
-                      alt={v.title || `Video ${i + 1}`}
-                      fill
-                      sizes="(max-width: 768px) 50vw, 35vw"
-                      className="object-cover"
-                    />
-                  )}
+                  {/* Pre-render iframe so it's ready when slide becomes active */}
+                  <iframe
+                    src={getYouTubeEmbedUrl(v.youtubeUrl)}
+                    title={v.title || `Video ${i + 1}`}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="absolute inset-0 h-full w-full"
+                    tabIndex={isActive ? 0 : -1}
+                  />
+                  {/* Thumbnail overlay — hides when active to reveal loaded iframe */}
+                  <Image
+                    src={getYouTubeThumbnail(v.youtubeUrl)}
+                    alt={v.title || `Video ${i + 1}`}
+                    fill
+                    sizes="(max-width: 768px) 50vw, 35vw"
+                    className={`object-cover transition-opacity duration-300 ${
+                      isActive ? 'opacity-0 pointer-events-none' : 'opacity-100'
+                    }`}
+                  />
                 </div>
               </button>
             )
